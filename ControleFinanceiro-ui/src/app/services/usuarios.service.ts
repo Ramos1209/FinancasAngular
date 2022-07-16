@@ -1,14 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DadosLogin } from '../models/DadosLogin';
 import { DadosRegistro } from '../models/DadosRegistro';
 
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type' : 'application/json'
+    'Content-Type' : 'application/json',
+     Authorization: `Bearer ${localStorage.getItem('TokenUser')}`,
   }),
-}
+};
 
 
 
@@ -23,13 +25,17 @@ export class UsuariosService {
 
 
 
-  SalvarFoto(formdata: any): Observable<any>{
+  SalvarFoto(formData: any): Observable<any>{
    const apiUrl = `${this.url}/SalvarFoto`;
-   return this.http.post<any>(apiUrl,formdata);
+   return this.http.post<any>(apiUrl,formData);
   }
 
   RegistrarUsuario(dadosRegistro: DadosRegistro): Observable<any>{
     const apiUrl  =`${this.url}/RegistrarUsuario`;
-    return  this.http.post<DadosRegistro>(apiUrl, dadosRegistro);
+    return  this.http.post<DadosRegistro>(apiUrl, dadosRegistro,httpOptions);
+  }
+  LogarUsuario(dadosLogin:DadosLogin): Observable<any>{
+    const apiUrl  =`${this.url}/LogarUsuario`;
+    return this.http.post<DadosLogin>(apiUrl,dadosLogin);
   }
 }

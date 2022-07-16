@@ -24,7 +24,7 @@ export class RegistrarUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.errors = [];
     this.formulario = new FormGroup({
-      nomeusuario: new FormControl(null, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
+      nomeUsuario: new FormControl(null, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
       email: new FormControl(null, [Validators.required, Validators.maxLength(50), Validators.minLength(7)]),
       cpf: new FormControl(null, [Validators.required, Validators.maxLength(15), Validators.minLength(11)]),
       foto: new FormControl(null, [Validators.required]),
@@ -63,10 +63,17 @@ export class RegistrarUsuarioComponent implements OnInit {
       dadosRegistro.email = usuario.email;
       dadosRegistro.profissao = usuario.profissao;
       dadosRegistro.foto = resultado.foto;
+      dadosRegistro.senha = usuario.senha;
 
       this._usuarioService.RegistrarUsuario(dadosRegistro).subscribe(dados => {
-        const emailUsuarioLogado = dados.EmailUsuario;
-        localStorage.setItem('emailUsuarioLogado', emailUsuarioLogado);
+        const emailUsuarioLogado = dados.emailUsuarioLogado;
+        const usuarioId = dados.usuarioId;
+        const token = dados.tokenUsuarioLogado;
+        localStorage.setItem('EmailUsuarioLogado', emailUsuarioLogado);
+        localStorage.setItem('usuarioId', usuarioId);
+        localStorage.setItem('TokenUser', token);
+
+
         this.route.navigate(['list/categias']);
       },
         (err) => {

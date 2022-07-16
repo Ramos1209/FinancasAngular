@@ -19,6 +19,7 @@ import { AtualizaCategoriaComponent } from './components/Categorias/atualiza-cat
 import { ListagemFuncaoComponent ,DialogExclusaoFuncoesComponent} from './components/Funcao/listagem-funcao/listagem-funcao.component';
 import { NovaFuncaoComponent } from './components/Funcao/nova-funcao/nova-funcao.component';
 import { AtualizaFuncaoComponent } from './components/Funcao/atualiza-funcao/atualiza-funcao.component';
+import { LoginUsuarioComponent } from './components/Usuarios/Login/login-usuario/login-usuario.component';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,8 +38,17 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { RegistrarUsuarioComponent } from './components/Usuarios/registrar-usuario/registrar-usuario.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import {MatListModule} from '@angular/material/list';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { JwtModule } from "@auth0/angular-jwt";
+import { DashboardComponent } from './components/Dashboard/dashboard/dashboard.component';
+import { HeaderComponent } from './components/Dashboard/header/header.component';
 
+export function PegarTokenUsuario() {
+  return localStorage.getItem('token');
+}
 
 
 
@@ -53,7 +63,10 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     ListagemFuncaoComponent,
     NovaFuncaoComponent,
     AtualizaFuncaoComponent,
-    RegistrarUsuarioComponent
+    RegistrarUsuarioComponent,
+    LoginUsuarioComponent,
+    DashboardComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +79,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
+    MatListModule,
     MatInputModule,
     MatDividerModule,
     MatSelectModule,
@@ -76,9 +90,19 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     MatSortModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    MatSidenavModule,
+    MatToolbarModule,
     FormsModule,
     FlexLayoutModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: PegarTokenUsuario,
+        allowedDomains: ['localhost:5000'],
+        disallowedRoutes: [],
+      },
+    }),
+ 
   
   ],
   providers: [
